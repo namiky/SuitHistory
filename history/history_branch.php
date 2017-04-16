@@ -5,7 +5,7 @@ if(isset($_POST['add'])==true){
   exit();
 }
 elseif(isset($_POST['img_add'])==true){
-  header('Location:img_add.php');
+  header('Location:history_add.php');
   exit();
 }
 
@@ -28,10 +28,6 @@ if(isset($_POST['edit'])==true){
 }
 elseif(isset($_POST['delete'])==true){
   header('Location:history_delete.php?history_id='.$history_id);
-  exit();
-}
-elseif(isset($_POST['disp'])==true){
-  header('Location:history_disp.php?history_id='.$history_id);
   exit();
 }
 

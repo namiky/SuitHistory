@@ -11,7 +11,7 @@ try
 	$post=sanitize($_POST);
 
 	#postを取得
-	$id=$post['id'];
+	$name=$post['name'];
 	$pass=$post['pass'];
 
 	#PWの暗号化
@@ -21,8 +21,8 @@ try
 	$dbh=DBconnect();
 
 	#SQL実行準備
-	$sql='SELECT name FROM user WHERE id=? AND password=?';
-	$question[]=$id;
+	$sql='SELECT id FROM user WHERE name=? AND password=?';
+	$question[]=$name;
 	$question[]=$pass;
 
 	#SQL実行
@@ -36,14 +36,15 @@ try
 	# 1行取得のときに使用。複数行が結果の場合は最後のカラムが対象
 	$rec=$stmt->fetch(PDO::FETCH_ASSOC);
 
+	# ユーザIDとPWの組み合わせが存在しない場合
 	if($rec==false){
 		print 'スタッフコードかパスワードが間違っています。<br />';
 		print '<a href="login.html"> 戻る</a>';
 	}else{
 		session_start();
 		$_SESSION['login']=1;
-  	$_SESSION['id']=$id;
-		$_SESSION['name']=$rec['name'];
+  	$_SESSION['name']=$name;
+		$_SESSION['user_id']=$rec['id'];
 
 		header('Location:mypage.php');
 		exit();

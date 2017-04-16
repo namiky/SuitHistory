@@ -15,8 +15,7 @@ try{
 
   #DB接続
 	$dbh=DBconnect();
-  $sql='SELECT item.id AS item_id, item.name AS item_name, img_id, img.name AS img_name FROM item JOIN img ON item.img_id=img.id ORDER BY item.id';
-	##これだとimg_idとitem.img_idがイコールでないものが表示されない
+  $sql='SELECT img.id AS img_id, img.name AS img_name FROM img ORDER BY img.id';
 
   #SQL実行
 	$stmt=DBexecute2($dbh,$sql);
@@ -25,12 +24,10 @@ try{
 	$dbh=null;
 
   # 表記
-  print 'アイテム一覧<br><br>';
-  print '<form method="post" action="item_branch.php">';
+  print '登録画像一覧<br><br>';
+  print '<form method="post" action="img_branch.php">';
   print '<table border="1"><tr><th>Radio</th>';
-	#print '<th>ItemID</th>';
-	print '<th>ItemName</th>';
-	#print '<th>imgID</th>';
+	print '<th>ImgName</th>';
 	print '<th>IMG</th>';# table のborder=1はいずれ削除!!!!!!!!!!!!
 
   # テーブル内部をwhileとSQL結果にて取得
@@ -40,16 +37,13 @@ try{
       break;
     }
     print'<tr>';
-    print '<td><input type="radio" name="item_id" value="'.$rec['item_id'].'"></td>';
-    #print '<td>'.$rec['item_id'].'</td>';
-    print '<td>'.$rec['item_name'].'</td>';
-    #print '<td>'.$rec['img_id'].'</td>';
-    print '<td><img class="image img-circle" src="../picture/'.$rec['img_name'].'"></td>';
+    print '<td><input type="radio" name="img_id" value="'.$rec['img_id'].'"></td>';
+    print '<td>'.$rec['img_id'].'</td>';
+		print '<td><img class="img-circle image" src="../picture/'.$rec['img_name'].'"></td>';
     print'</tr>';
   }
 
   print '</table>';
-#  print '<input type="submit" name="disp" value="参照">';
   print '<input type="submit" name="add" value="追加">';
   print '<input type="submit" name="edit" value="修正">';
   print '<input type="submit" name="delete" value="削除">';

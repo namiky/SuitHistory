@@ -15,16 +15,14 @@ try{
 	$post=sanitize($_POST);
 
 	#postを取得
-	$item_id=$post['item_id'];
-	$history_date=$post['history_date'];
+	$img_name=$post['img_name'];
 
   #DB接続
 	$dbh=DBconnect();
 
   #SQL実行準備
-  $sql='INSERT INTO history(item_id,date,user_id) VALUES(?,?,?)';
-	$question[]=$item_id;
-	$question[]=$history_date;
+  $sql='INSERT INTO img(name,user_id) VALUES(?,?)';
+	$question[]=$img_name;
 	$question[]=$_SESSION['user_id'];
 
 	#SQL実行
@@ -34,7 +32,7 @@ try{
 	$dbh=null;
 
   #正常処理後
-  print 'ヒストリに追加しました<br />';
+  print $img_name.'を追加しました<br />';
 }
 catch (Exception $e){
   print 'データベース障害';

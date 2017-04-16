@@ -15,17 +15,14 @@ try{
 	$post=sanitize($_POST);
 
 	#postを取得
-	$item_id=$post['item_id'];
-	$history_date=$post['history_date'];
+	$history_id=$post['history_id'];
 
   #DB接続
 	$dbh=DBconnect();
 
   #SQL実行準備
-  $sql='INSERT INTO history(item_id,date,user_id) VALUES(?,?,?)';
-	$question[]=$item_id;
-	$question[]=$history_date;
-	$question[]=$_SESSION['user_id'];
+	$sql='DELETE FROM history WHERE history.id=?';
+	$question[]=$history_id;
 
 	#SQL実行
 	$stmt=DBexecute($dbh,$sql,$question);
@@ -34,11 +31,11 @@ try{
 	$dbh=null;
 
   #正常処理後
-  print 'ヒストリに追加しました<br />';
+  print 'ヒストリを削除しました<br />';
 }
 catch (Exception $e){
   print 'データベース障害';
-	# var_dump($e);
+	 var_dump($e);
   exit();
 }
  ?>

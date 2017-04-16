@@ -2,6 +2,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 <title>てすと</title>
 </head>
 <body>
@@ -22,7 +24,7 @@ try{
 	$dbh=DBconnect();
 
   #SQL実行準備
-  $sql='UPDATE item SET name=?, img_id=? WHERE id=?';
+	$sql='UPDATE item SET name=?, img_id=? WHERE id=?';
 	$question[]=$item_name;
 	$question[]=$img_id;
 	$question[]=$item_id;

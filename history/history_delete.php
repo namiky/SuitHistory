@@ -19,54 +19,50 @@ try{
 
 #共通関数の読み取り
 require_once('../common/common.php');
-$user_id=$_SESSION['user_id'];
 
+$user_id=$_SESSION['user_id'];
+$history_id=$_GET['history_id'];
+
+
+#####DBよりhistryoを取得
 #DB接続
 $dbh=DBconnect();
-$sql='SELECT item.id AS item_id, item.name AS item_name, item.img_id AS img_id, img.name AS img_name
-      FROM item JOIN img ON item.img_id=img.id
-      WHERE item.user_id=?
-      ORDER BY item.id';
+$sql='SELECT history.date AS history_date, history.item_id AS item_id, img.id AS img_id, img.name AS img_name, item.name AS item_name
+      FROM history
+      INNER JOIN (item INNER JOIN img ON item.img_id=img.id)
+      ON history.item_id=item.id
+      WHERE history.id=?';
 
 #
-$question[]=$user_id;
+$question[]=$history_id;
 
 #SQL実行
 $stmt=DBexecute($dbh,$sql,$question);
 
-
 #dbh破棄（$stmtを使用するので）
 $dbh=null;
 
+$rec=$stmt->fetch(PDO::FETCH_ASSOC);
+
+}
+catch(Exception $e){
+  print'DB障害';
+  var_dump($e);
+  exit();
+}
  ?>
 
   <body>
-    ヒストリー追加</br></br>
-    <form method="post" action="history_add_check.php">
+    ヒストリー削除</br></br>
+    <form method="post" action="history_delete_done.php">
 
-      該当日付</br>
-      <input type="date" name="history_date" value="<?php print(date("Y-m-d"));?>"><br>
-      アイテム名を選択してください</br>
-      <select title="Select your surfboard" class="selectpicker" name="item_id">
-
-  <?php
-        while(true){
-          $rec=$stmt->fetch(PDO::FETCH_ASSOC);
-          if($rec==false){
-            break;
-          }
-          print '<option data-thumbnail="../picture/'.$rec['img_name'].'" value="'.$rec['item_id'].'">'.$rec['item_name'].'</option>';
-        }
-      }
-      catch(Exception $e){
-        print'DB障害';
-        var_dump($e);
-        exit();
-      }
-  ?>
-      </select>
+      <input type="hidden" name="history_id" value="<?=$history_id?>">
+        該当日付：<?php print $rec['history_date'];?><br>
+        画像：<img class="image img-circle" src="../picture/<?=$rec['img_name'];?>"><br>
+        アイテム名：<?=$rec['item_name']?><br><br>
 
       </br>
+      上記を削除してもよろしいですか？</br>
       <input type="button" onclick="history.back()" value="戻る">
       <input type="submit" value="OK">
 
